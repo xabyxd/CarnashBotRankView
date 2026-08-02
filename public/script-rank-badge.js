@@ -1,14 +1,45 @@
+// Determines which endpoint to call based on the URL used to open the page:
+//   /EUW/xabyxd-6X6   -> /api/rank/EUW/xabyxd-6X6
+//   /preset/xaby      -> /api/rank/preset/xaby
+// Returns null if the URL does not contain the expected parameters.
+function resolveRankEndpoint() {
+    const parts = window.location.pathname.split('/').filter(Boolean);
+
+    if (parts.length === 2 && parts[0].toLowerCase() === 'preset') {
+        return `/api/rank/preset/${encodeURIComponent(parts[1])}`;
+    }
+
+    if (parts.length === 2) {
+        const [region, riotId] = parts;
+        return `/api/rank/${encodeURIComponent(region)}/${encodeURIComponent(riotId)}`;
+    }
+
+    return null;
+}
+
 function fetchStatus() {
-    fetch('/status')
-        .then(response => response.json())
-        .then(data => {
-            const statusDiv = document.getElementById('status');
+    const statusDiv = document.getElementById('status');
+    const endpoint = resolveRankEndpoint();
+
+    if (!endpoint) {
+        statusDiv.innerHTML = `<p>Añade una región y summoner a la URL.<br>Ej: /EUW/xabyxd-6X6</p>`;
+        return;
+    }
+
+    fetch(endpoint)
+        .then(response => response.json().then(data => ({ ok: response.ok, data })))
+        .then(({ ok, data }) => {
+            if (!ok) {
+                throw new Error(data.error || 'Error desconocido');
+            }
+
             let imageUrl = '';
 
             const tier = data.tier || 'UNRANKED';
             const rank = data.rank || '';
             const lp = data.lp || 0;
-            const winrate = data.winrate || 0;
+            // The API now returns the win rate as text, including the % symbol (e.g., "53.13%").
+            const winrate = (data.winrate ?? '0%').toString().replace('%', '');
             const summoner = data.summoner || 'Unknown';
             const region = data.region || 'Unknown';
 
@@ -26,47 +57,47 @@ function fetchStatus() {
 
             switch (tierUpper) {
                 case 'IRON':
-                    imageUrl = 'images/Iron.webp';
+                    imageUrl = '/images/Iron.webp';
                     glowClass = 'glow-iron';
                     break;
                 case 'BRONZE':
-                    imageUrl = 'images/Bronze.webp';
+                    imageUrl = '/images/Bronze.webp';
                     glowClass = 'glow-bronze';
                     break;
                 case 'SILVER':
-                    imageUrl = 'images/Silver.webp';
+                    imageUrl = '/images/Silver.webp';
                     glowClass = 'glow-silver';
                     break;
                 case 'GOLD':
-                    imageUrl = 'images/Gold.webp';
+                    imageUrl = '/images/Gold.webp';
                     glowClass = 'glow-gold';
                     break;
                 case 'PLATINUM':
-                    imageUrl = 'images/Platinum.webp';
+                    imageUrl = '/images/Platinum.webp';
                     glowClass = 'glow-platinum';
                     break;
                 case 'EMERALD':
-                    imageUrl = 'images/Emerald.webp';
+                    imageUrl = '/images/Emerald.webp';
                     glowClass = 'glow-emerald';
                     break;
                 case 'DIAMOND':
-                    imageUrl = 'images/Diamond.webp';
+                    imageUrl = '/images/Diamond.webp';
                     glowClass = 'glow-diamond';
                     break;
                 case 'MASTER':
-                    imageUrl = 'images/Master.webp';
+                    imageUrl = '/images/Master.webp';
                     glowClass = 'glow-master';
                     break;
                 case 'GRANDMASTER':
-                    imageUrl = 'images/Grandmaster.webp';
+                    imageUrl = '/images/Grandmaster.webp';
                     glowClass = 'glow-grandmaster';
                     break;
                 case 'CHALLENGER':
-                    imageUrl = 'images/Challenger.webp';
+                    imageUrl = '/images/Challenger.webp';
                     glowClass = 'glow-challenger';
                     break;
                 default:
-                    imageUrl = 'images/Unranked.webp';
+                    imageUrl = '/images/Unranked.webp';
                     glowClass = 'glow-unranked';
             }
 
@@ -81,8 +112,7 @@ function fetchStatus() {
         })
         .catch(error => {
             console.error('Error fetching status:', error);
-            const statusDiv = document.getElementById('status');
-            statusDiv.innerHTML = `<p>Error loading data</p>`;
+            statusDiv.innerHTML = `<p>${error.message || 'Error loading data'}</p>`;
         });
 }
 
