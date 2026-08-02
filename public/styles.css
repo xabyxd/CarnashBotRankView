@@ -1,0 +1,76 @@
+/* Font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* Tiers */
+.glow-iron       { --glow-color: #6e6e6e; }  /* Gris oscuro */
+.glow-bronze     { --glow-color: #cd7f32; }  /* Marrón bronce */
+.glow-silver     { --glow-color: #c0c0c0; }  /* Gris claro */
+.glow-gold       { --glow-color: #ffd700; }  /* Amarillo */
+.glow-platinum   { --glow-color: #317c7c; }  /* Verde sucio */
+.glow-emerald    { --glow-color: #50c878; }  /* Verde celeste */
+.glow-diamond    { --glow-color: #a8bcff; }  /* Azul celeste */
+.glow-master     { --glow-color: #cf5ac6; }  /* Rosa fuerte */
+.glow-grandmaster{ --glow-color: #ff4040; }  /* Rojo */
+.glow-challenger { --glow-color: #88fbff; }  /* Azul celeste */
+.glow-unranked   { --glow-color: #aaaaaa; }  /* Gris oscuro */
+
+@keyframes float {
+    0%   { transform: translateY(-20px); }
+    50%  { transform: translateY(-30px); }
+    100% { transform: translateY(-20px); }
+}
+
+@keyframes glow {
+    0%   { filter: drop-shadow(0 0 4px var(--glow-color)); }
+    50%  { filter: drop-shadow(0 0 12px var(--glow-color)); }
+    100% { filter: drop-shadow(0 0 4px var(--glow-color)); }
+}
+
+.rank-glow {
+    animation: float 5s ease-in-out infinite, glow 2s ease-in-out infinite;
+    max-width: 250px;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: transparent;
+}
+
+#status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px; /* Espacio entre el badge y el texto */
+    text-align: left;
+}
+
+#status img {
+    max-width: 250px;
+    height: auto;
+    display: block;
+    margin: 0; /* Elimina centrado automático */
+}
+
+#status img {
+    max-width: 250px;
+    height: auto;
+    display: block;
+    margin: 0;
+}
+
+#status p {
+    margin: 0; /* Quita márgenes superiores/inferiores */
+    font-size: 20px;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 10px 20px;
+    border-radius: 10px;
+    /*backdrop-filter: blur(10px);*/
+    display: inline-block;
+    text-align: center;
+}
