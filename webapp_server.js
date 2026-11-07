@@ -13,14 +13,13 @@ const API_LANG = 'en';
 // Array of valid regions for the API endpoint
 const VALID_REGIONS = ['EUW', 'EUNE', 'NA', 'KR', 'JP', 'BR', 'LAN', 'LAS', 'OCE', 'TR', 'RU'];
 
-// Array of summoners to display (old format)
-const summoners = [
-    { name: 'xabyxd', tag: '6666', region: 'EUW' },
-    { name: 'NUTS IN TRANCE', tag: '6X6', region: 'EUW' },
-    { name: 'EXEDRA', tag: 'TEKK', region: 'EUW' },
-    { name: 'EYES OF LIES', tag: '6XX', region: 'EUW' },
-    { name: '진돗개', tag: '0415', region: 'KR' }
-];
+// Summoner presets (key -> Riot ID), used by /preset/<key> and /api/rank/preset/<key>
+const presets = {
+    xaby: { name: 'xabyxd', tag: '6X6', region: 'EUW' },
+    nuts: { name: 'NUTS IN TRANCE', tag: '6X6', region: 'EUW' },
+    exedra: { name: 'EXEDRA', tag: 'TEKK', region: 'EUW' },
+    eyes: { name: 'EYES OF LIES', tag: '6XX', region: 'EUW' }
+};
 
 // Express memory cache for summoner data
 const CACHE_TTL_MS = 30 * 1000; // 1 minute
@@ -60,7 +59,8 @@ app.use(express.static('public'));
 // (goes BEFORE the generic route below: Express tests routes in the
 // order they are registered, and "preset" would also match as :region)
 app.get('/api/rank/preset/:key', async (req, res) => {
-    const preset = presets[req.params.key.toLowerCase()];
+    const key = req.params.key.toLowerCase();
+    const preset = Object.hasOwn(presets, key) ? presets[key] : null;
     if (!preset) {
         return res.status(404).json({ error: `Preset desconocido: ${req.params.key}` });
     }

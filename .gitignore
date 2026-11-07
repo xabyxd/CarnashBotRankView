@@ -1,2 +1,10 @@
 node_modules
-deploy-hooks
+
+# Entorno y logs
+.env
+.env.*
+*.log
+
+# Sistema
+.DS_Store
+Thumbs.db

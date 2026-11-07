@@ -1,4 +1,4 @@
 @echo off
-cd /d C:\Users\xabyxd\Documents\CarnashBotRankView
+cd /d "%~dp0"
 node webapp_server.js
 pause

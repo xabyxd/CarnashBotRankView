@@ -1,21 +1,26 @@
 {
 	"name": "carnashbotrankview",
-	"version": "2.0.0",
+	"version": "2.1.0",
+	"private": true,
+	"description": "Overlay de rango de League of Legends para OBS",
 	"main": "webapp_server.js",
 	"scripts": {
-		"dev": "nodemon webapp_server.js",
-		"start": "node webapp_server.js"
+		"start": "node webapp_server.js",
+		"dev": "nodemon webapp_server.js"
 	},
-	"keywords": [],
-	"author": "",
+	"engines": {
+		"node": ">=22"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/xabyxd/CarnashBotRankView.git"
+	},
 	"license": "Apache-2.0",
-	"description": "",
 	"dependencies": {
-		"axios": "1.10.0",
-		"express": "5.1.0",
-		"fs": "0.0.1-security"
+		"axios": "1.21.0",
+		"express": "5.3.0"
 	},
 	"devDependencies": {
-		"nodemon": "3.1.10"
+		"nodemon": "3.1.11"
 	}
 }

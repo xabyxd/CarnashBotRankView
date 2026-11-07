@@ -1,0 +1,8 @@
+# Normaliza los finales de línea: LF en el repositorio y en el checkout
+* text=auto eol=lf
+
+# Windows necesita CRLF en los scripts de lote
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+*.webp binary
