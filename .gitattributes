@@ -1,5 +1,5 @@
 # Normaliza los finales de línea: LF en el repositorio y en el checkout
-* text=auto eol=lf
+* text=auto eol=crlf
 
 # Windows necesita CRLF en los scripts de lote
 *.bat text eol=crlf
